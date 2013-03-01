@@ -18,7 +18,8 @@ object ApplicationBuild extends Build {
     "org.webjars" % "webjars-play" % "2.1.0",
     "org.webjars" % "bootstrap" % "2.3.0",
     "edu.stanford.nlp" % "stanford-corenlp" % "1.3.4",
-   	"net.sourceforge.nekohtml" % "nekohtml" % "1.9.17"
+   	"net.sourceforge.nekohtml" % "nekohtml" % "1.9.17",
+   	"rome" % "rome" % "1.0"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(

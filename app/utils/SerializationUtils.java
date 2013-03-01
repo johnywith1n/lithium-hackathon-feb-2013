@@ -8,8 +8,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SerializationUtils
 {
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger (SerializationUtils.class);
+	
 	public static byte[] serialize (Object o)
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream ();
@@ -22,7 +28,7 @@ public class SerializationUtils
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace ();
+			LOGGER.error ("Unable to serialize object.", e);
 		}
 		finally
 		{
@@ -33,7 +39,7 @@ public class SerializationUtils
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace ();
+				LOGGER.error ("Unable to close output streams.", e);
 			}
 		}
 		return null;
@@ -50,13 +56,11 @@ public class SerializationUtils
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace ();
+			LOGGER.error ("Unable to deserialize object.", e);
 		}
 		catch (ClassNotFoundException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace ();
+			LOGGER.error ("Unable to find class for object.", e);
 		}
 		finally
 		{
@@ -68,8 +72,7 @@ public class SerializationUtils
 			}
 			catch (IOException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace ();
+				LOGGER.error ("Unable to close input streams.", e);
 			}
 		}
 		return null;

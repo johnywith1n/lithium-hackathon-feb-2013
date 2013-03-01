@@ -37,7 +37,7 @@ public class Company extends Model
 
 	private static Model.Finder<String, Company> find = new Model.Finder<String, Company> (
 			String.class, Company.class);
-	
+
 	public Company(String name)
 	{
 		this.name = name;
@@ -57,10 +57,11 @@ public class Company extends Model
 	{
 		return bag_of_words_transform;
 	}
-	
-	public BagOfWordsTransform getTransform()
+
+	public BagOfWordsTransform getTransform ()
 	{
-		return (BagOfWordsTransform) SerializationUtils.deserialize (getBag_of_words_transform());
+		return (BagOfWordsTransform) SerializationUtils
+				.deserialize (getBag_of_words_transform ());
 	}
 
 	public void setBag_of_words_transform (byte[] bag_of_words_transform)
@@ -72,13 +73,13 @@ public class Company extends Model
 	{
 		return sampleDocs;
 	}
-	
-	public static Company getCompany(String name)
+
+	public static Company getCompany (String name)
 	{
 		return find.where ().eq ("name", name).findUnique ();
 	}
-	
-	public static void setTransform(Company company, byte[] transform)
+
+	public static void setTransform (Company company, byte[] transform)
 	{
 		company.setBag_of_words_transform (transform);
 		company.save ();

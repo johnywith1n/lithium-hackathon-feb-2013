@@ -75,11 +75,12 @@ public class DocumentVectorizer
 					}
 				});
 	}
-	
-	private boolean keepWord(String word)
+
+	private boolean keepWord (String word)
 	{
 		return word.length () > 1 && !word.startsWith ("http")
-				&& !word.startsWith ("www") && !word.startsWith ("href") && !word.startsWith ("<");
+				&& !word.startsWith ("www") && !word.startsWith ("href")
+				&& !word.startsWith ("<");
 	}
 
 	private List<Word> getTokenization (String text)
@@ -98,59 +99,63 @@ public class DocumentVectorizer
 
 	private Iterable<TermOccurrence> filter (List<Word> words)
 	{
-		return this.stopListFilter.filterTerms (transformWordsToTermOccurrences (words));
+		return this.stopListFilter
+				.filterTerms (transformWordsToTermOccurrences (words));
 	}
 
-	private void addToTermCounts (Iterable<TermOccurrence> terms, DefaultTermCounts counts)
+	private void addToTermCounts (Iterable<TermOccurrence> terms,
+			DefaultTermCounts counts)
 	{
 		for (TermOccurrence term : terms)
 		{
 			Term t = term.asTerm ();
 			String word = t.getName ();
-			if (keepWord(word))
+			if (keepWord (word))
 				counts.add (t);
 		}
 	}
-	
+
 	private void addTextToTermIndex (TermIndex index, DefaultTermCounts counts)
 	{
-		for (Term term : counts.getTerms())
+		for (Term term : counts.getTerms ())
 		{
-			int count = counts.getCount(term);
+			int count = counts.getCount (term);
 			if (count > minUnigramCount)
-				index.add(term);
+				index.add (term);
 		}
 	}
+
 	private TermIndex indexTerms ()
 	{
-		DefaultTermCounts counts = new DefaultTermCounts();
+		DefaultTermCounts counts = new DefaultTermCounts ();
 
-		for (Link link: links)
+		for (Link link : links)
 		{
-			addToTermCounts(filter(getTokenization (link.getBody ())), counts);
+			addToTermCounts (filter (getTokenization (link.getBody ())), counts);
 		}
 
-		TermIndex index = new DefaultTermIndex();
-		addTextToTermIndex(index, counts);
+		TermIndex index = new DefaultTermIndex ();
+		addTextToTermIndex (index, counts);
 
 		return index;
 	}
-	
+
 	public BagOfWordsTransform createTransform ()
 	{
 		return new BagOfWordsTransform (indexTerms ());
 	}
-	
-	public Vector getTransformTextToVector (String text, BagOfWordsTransform transform)
+
+	public Vector getTransformTextToVector (String text,
+			BagOfWordsTransform transform)
 	{
-		List<Term> terms = new ArrayList<Term>();
-		for (TermOccurrence t : filter(getTokenization (text)))
+		List<Term> terms = new ArrayList<Term> ();
+		for (TermOccurrence t : filter (getTokenization (text)))
 		{
 			Term term = t.asTerm ();
-			if (keepWord(term.getName ()))
-				terms.add(term);
+			if (keepWord (term.getName ()))
+				terms.add (term);
 		}
-		
-		return transform.convertToVector(terms);
+
+		return transform.convertToVector (terms);
 	}
 }

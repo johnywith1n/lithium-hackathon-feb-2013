@@ -41,7 +41,7 @@ public class SampleDocument extends Model
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	private byte[] vector;
-	
+
 	public SampleDocument(Company company, String url, String body,
 			byte[] vector)
 	{
@@ -75,10 +75,10 @@ public class SampleDocument extends Model
 	{
 		return vector;
 	}
-	
-	public Vector getActualVector()
+
+	public Vector getActualVector ()
 	{
-		return (Vector) SerializationUtils.deserialize (getVector());
+		return (Vector) SerializationUtils.deserialize (getVector ());
 	}
-	
+
 }

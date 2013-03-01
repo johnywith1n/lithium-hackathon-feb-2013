@@ -14,8 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.SerializationUtils;
 
 import utils.HttpClientUtils;
-import de.l3s.boilerpipe.BoilerpipeProcessingException;
-import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
 public class ProcessSampleDocuments
 {
@@ -42,7 +40,7 @@ public class ProcessSampleDocuments
 
 	public Link retrieveUrl (String url)
 	{
-		return new Link (url, extractArticle (url));
+		return new Link (url, HttpClientUtils.extractArticle (client, url));
 	}
 
 	public void processDocuments (List<String> urls)
@@ -63,20 +61,4 @@ public class ProcessSampleDocuments
 			doc.save ();
 		}
 	}
-
-	public String extractArticle (String url)
-	{
-		ArticleExtractor extractor = new ArticleExtractor ();
-		try
-		{
-			return extractor.getText (HttpClientUtils.getResponseAsInputSource (
-					client, url));
-		}
-		catch (BoilerpipeProcessingException e)
-		{
-			LOGGER.error ("", e);
-		}
-		return "";
-	}
-
 }

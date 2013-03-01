@@ -9,8 +9,6 @@ import models.Company;
 import models.SampleDocument;
 
 import org.apache.http.client.HttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.SerializationUtils;
 
 import utils.HttpClientUtils;
@@ -19,8 +17,6 @@ public class ProcessSampleDocuments
 {
 	private final HttpClient client;
 	private final Company company;
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger (ProcessSampleDocuments.class);
 
 	public ProcessSampleDocuments(HttpClient client, Company company)
 	{
@@ -43,7 +39,7 @@ public class ProcessSampleDocuments
 		return new Link (url, HttpClientUtils.extractArticle (client, url));
 	}
 
-	public void processDocuments (List<String> urls)
+	public void processDocumentsAndSaveDocuments (List<String> urls)
 	{
 		List<Link> links = retrieveUrls (urls);
 		DocumentVectorizer vectorizer = new DocumentVectorizer (links);
@@ -55,10 +51,22 @@ public class ProcessSampleDocuments
 		for (Link link : links)
 		{
 			SampleDocument doc = new SampleDocument (company, link.getUrl (),
-					link.getBody (), SerializationUtils.serialize (vectorizer
+					link.getBody (), SerializationUtils.serialize (DocumentVectorizer
 							.getTransformTextToVector (link.getBody (),
 									transform)));
 			doc.save ();
 		}
+	}
+	
+	public BagOfWordsTransform processDocuments (List<String> urls)
+	{
+		List<Link> links = retrieveUrls (urls);
+		DocumentVectorizer vectorizer = new DocumentVectorizer (links);
+		BagOfWordsTransform transform = vectorizer.createTransform ();
+		company.setBag_of_words_transform (SerializationUtils
+				.serialize (transform));
+		company.save ();
+
+		return transform;
 	}
 }

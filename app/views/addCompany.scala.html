@@ -1,0 +1,32 @@
+@(form: Form[models.forms.CompanyForm])
+@implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
+
+@main("Add a company") {
+ 	<div class="container-fluid">
+ 	
+ 		<div class="row-fluid">
+	 		<div class="span12">
+	 			@helper.form(action = routes.CompanyController.processCompany, 'class -> "well form-horizontal") {
+	 				@if(flash.contains("success")) {		
+			            <p class="alert alert-success">
+			                @flash.get("success")
+			            </p>
+        			}
+        			@if(form.hasGlobalErrors) {
+	                	<p class="alert alert-error">
+	                    	@form.globalError.message
+	                	</p>
+		            }
+		            <p class="lead">
+ 						Add a new company
+					</p>
+	 				@helper.inputText(form("name"), '_label -> "Company name", 'id -> "company_name")
+	 				<div class="controls">
+		                <button type="submit" class="btn btn-primary">Create Company</button>
+		            </div>
+	 			}
+	 		
+	 		</div>
+		</div>
+    </div>
+}

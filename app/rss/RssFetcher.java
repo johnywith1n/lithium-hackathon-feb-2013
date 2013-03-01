@@ -1,5 +1,7 @@
 package rss;
 
+import gov.sandia.cognition.text.term.vector.BagOfWordsTransform;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,10 +31,13 @@ public class RssFetcher
 
 	private final List<String> urls;
 	private final HttpClient client;
+	private final Company company;
+	
 	public RssFetcher(Company company, HttpClient client, List<String> urls)
 	{
 		this.client = client;
 		this.urls = urls;
+		this.company = company;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,6 +83,7 @@ public class RssFetcher
 		for(String url: urls)
 		{
 			String body = HttpClientUtils.extractArticle (client, url);
+			BagOfWordsTransform transform = company.getTransform();
 		}
 		
 		return results;

@@ -40,7 +40,7 @@ public class Application extends Controller
 		System.out.println("Processing samples");
 		ProcessSampleDocuments processor = new ProcessSampleDocuments (
 				client, company);
-		processor.processDocuments (Files.readLines (new File (
+		processor.processDocumentsAndSaveDocuments (Files.readLines (new File (
 				"resources/sample_articles.txt"), Charsets.UTF_8));
 		System.out.println("Processing Rss feeds");
 		RssFetcher fetcher = new RssFetcher (company, client);

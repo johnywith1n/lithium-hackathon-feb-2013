@@ -3,6 +3,7 @@ package controllers;
 import java.util.Set;
 
 import models.Company;
+import models.RssFeed;
 import models.SampleDocument;
 import models.forms.FetchRssFeedForm;
 import play.data.Form;
@@ -29,12 +30,21 @@ public class FetchRssFeedController extends Controller
 					FetchCoordinator.getRunningProcesses ()));
 		}
 
+		Company company = Company.getCompany (form.get ().companyName);
 		Set<SampleDocument> docs = Company.getCompany (form.get ().companyName)
 				.getSampleDocs ();
+		Set<RssFeed> feeds = company.getRssFeed ();
 		if (docs == null || docs.size () == 0)
 		{
 			flash ("error",
-					"This company doesn't have any sample documents. Please add some first.");
+					"This company doesn't have any sample documents. Please add one first.");
+			return badRequest (fetchRssFeed.render (form,
+					FetchCoordinator.getRunningProcesses ()));
+		}
+		else if(feeds == null || feeds.size () == 0)
+		{
+			flash ("error",
+					"This company doesn't have any rss feeds. Please add one first.");
 			return badRequest (fetchRssFeed.render (form,
 					FetchCoordinator.getRunningProcesses ()));
 		}
@@ -50,7 +60,7 @@ public class FetchRssFeedController extends Controller
 			FetchRssFeedForm feedForm = form.get ();
 
 			FetchCoordinator.startRssFetchInCallable (feedForm.name,
-					Company.getCompany (feedForm.companyName));
+					company);
 			flash ("success", "Fetch in progress.");
 			return ok (fetchRssFeed.render (Form.form (FetchRssFeedForm.class),
 					FetchCoordinator.getRunningProcesses ()));

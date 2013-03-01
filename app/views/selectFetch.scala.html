@@ -1,4 +1,5 @@
 @(form: Form[models.forms.SelectFetchProcessForm])
+@implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
 
 @main("Select a finished fetch") {
  	<div class="container-fluid">

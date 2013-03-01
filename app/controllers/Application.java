@@ -28,7 +28,7 @@ public class Application extends Controller
 
 	public static Result index () throws IOException
 	{
-		return ok (index.render ("Hello"));
+		return ok (index.render ());
 	}
 	
 	private static void testPipeline() throws IOException

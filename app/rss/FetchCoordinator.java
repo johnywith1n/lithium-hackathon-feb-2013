@@ -12,6 +12,7 @@ import models.Company;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -64,7 +65,7 @@ public class FetchCoordinator
 
 	public static synchronized boolean hasNamedProcess (String name)
 	{
-		return runningFetchers.contains (name);
+		return runningFetchers.contains (name) || doneProcessToCompanyMap.keySet ().contains (name);
 	}
 
 	public static synchronized Set<String> getRunningProcesses ()
@@ -72,8 +73,8 @@ public class FetchCoordinator
 		return new HashSet<String> (runningFetchers);
 	}
 	
-	public static synchronized Set<String> getFinishedProcesses ()
+	public static synchronized List<String> getFinishedProcesses ()
 	{
-		return doneProcessToCompanyMap.keySet ();
+		return Lists.newArrayList(doneProcessToCompanyMap.keySet ());
 	}
 }

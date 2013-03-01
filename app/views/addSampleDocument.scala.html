@@ -1,0 +1,36 @@
+@(form: Form[models.forms.SampleDocumentForm])
+@implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
+
+@main("Add a company") {
+ 	<div class="container-fluid">
+ 		<div class="row-fluid">
+	 		<div class="span12">
+	 			@helper.form(action = routes.SampleDocumentController.processSampleDoc, 'class -> "well form-horizontal") {
+	 				@if(flash.contains("success")) {		
+			            <p class="alert alert-success">
+			                @flash.get("success")
+			            </p>
+        			}
+        			@if(form.hasGlobalErrors) {
+	                	<p class="alert alert-error">
+	                    	@form.globalError.message
+	                	</p>
+		            }
+		            <p class="lead">
+ 						Add a new sample document
+					</p>
+					@helper.select(
+		            	form("companyName"), 
+		            	options = helper.options(models.Company.getAllCompanyNames()),
+		            	'_label -> "Company",
+		            	'id -> "company"
+		            	)
+	 				@helper.inputText(form("url"), '_label -> "Sample Document Url", 'id -> "doc_url")
+	 				<div class="controls">
+		                <button type="submit" class="btn btn-primary">Create Sample Document</button>
+		            </div>
+	 			}
+	 		</div>
+		</div>
+    </div>
+}

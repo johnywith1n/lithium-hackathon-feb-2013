@@ -2,6 +2,8 @@ package models;
 
 import gov.sandia.cognition.text.term.vector.BagOfWordsTransform;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -85,6 +87,21 @@ public class Company extends Model
 	public static Company getCompany (String name)
 	{
 		return find.where ().eq ("name", name).findUnique ();
+	}
+	
+	public static List<Company> getAllCompanies ()
+	{
+		return find.all ();
+	}
+	
+	public static List<String> getAllCompanyNames ()
+	{
+		List<String> names = new ArrayList<String>();
+		for(Company company: getAllCompanies ())
+		{
+			names.add (company.getName ());
+		}
+		return names;
 	}
 
 	public static void setTransform (Company company, byte[] transform)

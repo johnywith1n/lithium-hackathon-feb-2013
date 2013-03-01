@@ -76,6 +76,11 @@ public class SampleDocument extends Model
 		return vector;
 	}
 
+	public void setVector (byte[] vector)
+	{
+		this.vector = vector;
+	}
+
 	public Vector getActualVector ()
 	{
 		return (Vector) SerializationUtils.deserialize (getVector ());

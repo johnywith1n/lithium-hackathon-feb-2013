@@ -71,4 +71,9 @@ public class FetchCoordinator
 	{
 		return new HashSet<String> (runningFetchers);
 	}
+	
+	public static synchronized Set<String> getFinishedProcesses ()
+	{
+		return doneProcessToCompanyMap.keySet ();
+	}
 }

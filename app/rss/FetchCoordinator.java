@@ -35,9 +35,8 @@ public class FetchCoordinator
 	public synchronized static void startRssFetchInCallable (String name,
 			Company company)
 	{
-		RssFetcherCallable callable = new RssFetcherCallable (company, name);
 		ListenableFuture<RssFetcherCallableResult> future = service
-				.submit (callable);
+				.submit (new RssFetcherCallable (company, name));
 		Futures.addCallback (future,
 				new FutureCallback<RssFetcherCallableResult> ()
 				{
@@ -58,9 +57,9 @@ public class FetchCoordinator
 	public synchronized static void callback (String name, Company company,
 			List<SimilarityResult> result)
 	{
+		runningFetchers.remove (name);
 		doneProcessToCompanyMap.put (name, company);
 		results.put (name, result);
-		runningFetchers.remove (name);
 	}
 
 	public static synchronized boolean hasNamedProcess (String name)

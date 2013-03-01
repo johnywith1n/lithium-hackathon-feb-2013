@@ -12,18 +12,18 @@
 					<table class="table-bordered table-striped table-condensed">
 						<thead>
 							<tr>
-								<th> Link </th>
 								<th> Body </th>
 							</tr>
 						</thead>
 						<tbody>
 							@for(result : rss.SimilarityResult <- results) {
 								<tr>
-									<td data-title="Link">
-										<a href="@result.getLink().getUrl()"> Link </a>
-									</td>
 									<td data-title="Body">
-										@result.getLink().getBody()
+										<p>
+											<a href="@result.getLink().getUrl()">
+												@result.getLink().getBody()
+											</a>
+										</p>
 									</td>
 								</tr>
 							}

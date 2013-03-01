@@ -36,8 +36,8 @@ public class DocumentVectorizer
 	private final List<Link> links;
 	private final int minUnigramCount;
 	private static final StopListFilter stopListFilter;
-	
-	static 
+
+	static
 	{
 		stopListFilter = getStopListFilter ();
 	}
@@ -64,7 +64,7 @@ public class DocumentVectorizer
 		return filter;
 	}
 
-	private Iterable<TermOccurrence> transformWordsToTermOccurrences (
+	private static Iterable<TermOccurrence> transformWordsToTermOccurrences (
 			Iterable<Word> input)
 	{
 		return Iterables.transform (input,
@@ -80,14 +80,14 @@ public class DocumentVectorizer
 				});
 	}
 
-	private boolean keepWord (String word)
+	private static boolean keepWord (String word)
 	{
 		return word.length () > 1 && !word.startsWith ("http")
 				&& !word.startsWith ("www") && !word.startsWith ("href")
 				&& !word.startsWith ("<");
 	}
 
-	private List<Word> getTokenization (String text)
+	private static List<Word> getTokenization (String text)
 	{
 		List<Word> result = new ArrayList<Word> ();
 		PTBTokenizer<Word> ptbt = new PTBTokenizer<Word> (new StringReader (
@@ -101,7 +101,7 @@ public class DocumentVectorizer
 		return result;
 	}
 
-	private Iterable<TermOccurrence> filter (List<Word> words)
+	private static Iterable<TermOccurrence> filter (List<Word> words)
 	{
 		return DocumentVectorizer.stopListFilter
 				.filterTerms (transformWordsToTermOccurrences (words));
@@ -149,7 +149,7 @@ public class DocumentVectorizer
 		return new BagOfWordsTransform (indexTerms ());
 	}
 
-	public Vector getTransformTextToVector (String text,
+	public static Vector getTransformTextToVector (String text,
 			BagOfWordsTransform transform)
 	{
 		List<Term> terms = new ArrayList<Term> ();

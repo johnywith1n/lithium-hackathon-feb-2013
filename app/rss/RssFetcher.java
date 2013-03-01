@@ -1,14 +1,18 @@
 package rss;
 
+import gov.sandia.cognition.math.matrix.Vector;
 import gov.sandia.cognition.text.term.vector.BagOfWordsTransform;
+import gov.sandia.cognition.text.term.vector.CosineSimilarityFunction;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import models.Company;
+import models.SampleDocument;
 
 import org.apache.http.client.HttpClient;
 import org.slf4j.Logger;
@@ -22,6 +26,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
+import data.DocumentVectorizer;
 import data.Link;
 
 public class RssFetcher
@@ -29,15 +34,17 @@ public class RssFetcher
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger (RssFetcher.class);
 
-	private final List<String> urls;
 	private final HttpClient client;
 	private final Company company;
+	private final Set<SampleDocument> samples;
+	private final CosineSimilarityFunction cosineSimilarityFunction;
 	
-	public RssFetcher(Company company, HttpClient client, List<String> urls)
+	public RssFetcher(Company company, HttpClient client)
 	{
 		this.client = client;
-		this.urls = urls;
 		this.company = company;
+		this.samples = company.getSampleDocs ();
+		this.cosineSimilarityFunction = new CosineSimilarityFunction ();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -76,14 +83,32 @@ public class RssFetcher
 		return entryUrls;
 	}
 
-	public List<Link> getSimilarLinks (List<String> urls)
+	private boolean isSimilarToSamples(Vector linkVector)
 	{
+		for(SampleDocument doc: samples)
+		{
+			if(cosineSimilarityFunction.evaluate (doc.getActualVector (), linkVector) > 0.5)
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @param urls The rss urls
+	 * @return A list of links similar to the sample documents
+	 */
+	public List<Link> getSimilarLinks (List<String> rssUrls)
+	{
+		List<String> urls = getRssEntryUrls (rssUrls);
 		List<Link> results = new ArrayList<Link>();
 		
 		for(String url: urls)
 		{
 			String body = HttpClientUtils.extractArticle (client, url);
 			BagOfWordsTransform transform = company.getTransform();
+			Vector linkVector = DocumentVectorizer.getTransformTextToVector (body, transform);
+			if(isSimilarToSamples (linkVector))
+				results.add (new Link(url, body));
 		}
 		
 		return results;

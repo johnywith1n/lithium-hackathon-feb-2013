@@ -85,6 +85,7 @@ public class SampleDocumentController extends Controller
 		{
 			doc.setVector (SerializationUtils.serialize (DocumentVectorizer
 					.getTransformTextToVector (doc.getBody (), transform)));
+			doc.save ();
 		}
 	}
 }

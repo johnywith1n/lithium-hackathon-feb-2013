@@ -1,8 +1,24 @@
-@(form: Form[models.forms.FetchRssFeedForm])
+@(form: Form[models.forms.FetchRssFeedForm], runningProcesses: Set[String])
 @implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
 
 @main("Fetch Similar Links") {
  	<div class="container-fluid">
+		@if(runningProcesses.size() > 0) {
+	 		<div class="row-fluid">
+		 		<div class="span12">
+		 			<p class="lead">
+		 				Active fetches
+	 				</p>
+		 			<ul>
+		 			@for(process: String <- runningProcesses) {
+		 				<li>
+		 					process
+		 				</li>
+		 			}
+		 			</ul>
+		 		</div>
+			</div>
+		}
  		<div class="row-fluid">
 	 		<div class="span12">
 	 			@helper.form(action = routes.FetchRssFeedController.runFetch, 'class -> "well form-horizontal") {

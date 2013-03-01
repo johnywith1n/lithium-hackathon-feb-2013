@@ -12,7 +12,8 @@ public class FetchRssFeedController extends Controller
 {
 	public static Result createFetch ()
 	{
-		return ok (fetchRssFeed.render (Form.form (FetchRssFeedForm.class)));
+		return ok (fetchRssFeed.render (Form.form (FetchRssFeedForm.class),
+				FetchCoordinator.getRunningProcesses ()));
 	}
 
 	public static Result runFetch ()
@@ -22,21 +23,24 @@ public class FetchRssFeedController extends Controller
 		FetchRssFeedForm feedForm = form.get ();
 		if (form.hasErrors ())
 		{
-			return badRequest (fetchRssFeed.render (form));
+			return badRequest (fetchRssFeed.render (form,
+					FetchCoordinator.getRunningProcesses ()));
 		}
 		else if (FetchCoordinator.hasNamedProcess (feedForm.name))
 		{
 			flash ("error",
 					"Please pick a different name, there is already a fetch in progress with that name.");
-			return badRequest (fetchRssFeed.render (form));
+			return badRequest (fetchRssFeed.render (form,
+					FetchCoordinator.getRunningProcesses ()));
 		}
 		else
 		{
 			FetchCoordinator.startRssFetchInCallable (feedForm.name,
 					Company.getCompany (feedForm.companyName));
 			flash ("success", "Fetch in progress.");
-			return ok (fetchRssFeed.render (Form.form (FetchRssFeedForm.class)));
+			return ok (
+					fetchRssFeed.render (Form.form (FetchRssFeedForm.class),
+					FetchCoordinator.getRunningProcesses ()));
 		}
 	}
-
 }

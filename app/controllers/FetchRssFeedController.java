@@ -1,6 +1,9 @@
 package controllers;
 
+import java.util.Set;
+
 import models.Company;
+import models.SampleDocument;
 import models.forms.FetchRssFeedForm;
 import play.data.Form;
 import play.mvc.Controller;
@@ -22,6 +25,16 @@ public class FetchRssFeedController extends Controller
 				.bindFromRequest ();
 		if (form.hasErrors ())
 		{
+			return badRequest (fetchRssFeed.render (form,
+					FetchCoordinator.getRunningProcesses ()));
+		}
+
+		Set<SampleDocument> docs = Company.getCompany (form.get ().companyName)
+				.getSampleDocs ();
+		if (docs == null || docs.size () == 0)
+		{
+			flash ("error",
+					"This company doesn't have any sample documents. Please add some first.");
 			return badRequest (fetchRssFeed.render (form,
 					FetchCoordinator.getRunningProcesses ()));
 		}

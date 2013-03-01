@@ -159,7 +159,6 @@ public class DocumentVectorizer
 			if (keepWord (term.getName ()))
 				terms.add (term);
 		}
-
 		return transform.convertToVector (terms);
 	}
 }

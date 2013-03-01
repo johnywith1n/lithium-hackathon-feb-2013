@@ -35,16 +35,20 @@ public class DocumentVectorizer
 
 	private final List<Link> links;
 	private final int minUnigramCount;
-	private final StopListFilter stopListFilter;
+	private static final StopListFilter stopListFilter;
+	
+	static 
+	{
+		stopListFilter = getStopListFilter ();
+	}
 
 	public DocumentVectorizer(List<Link> links)
 	{
 		this.links = links;
 		this.minUnigramCount = 20;
-		this.stopListFilter = getStopListFilter ();
 	}
 
-	private StopListFilter getStopListFilter ()
+	private static StopListFilter getStopListFilter ()
 	{
 		StopListFilter filter;
 		try
@@ -99,7 +103,7 @@ public class DocumentVectorizer
 
 	private Iterable<TermOccurrence> filter (List<Word> words)
 	{
-		return this.stopListFilter
+		return DocumentVectorizer.stopListFilter
 				.filterTerms (transformWordsToTermOccurrences (words));
 	}
 

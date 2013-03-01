@@ -1,0 +1,29 @@
+@(form: Form[models.forms.SelectFetchProcessForm])
+
+@main("Select a finished fetch") {
+ 	<div class="container-fluid">
+ 		<div class="row-fluid">
+	 		<div class="span12">
+	 			@helper.form(action = routes.ViewSimilarDocumentsController.showSimilarLinks, 'class -> "well form-horizontal") {
+	 				@if(form.hasGlobalErrors) {
+	                	<p class="alert alert-error">
+	                    	@form.globalError.message
+	                	</p>
+		            }
+		            <p class="lead">
+ 						Select a finished fetch to view
+					</p>
+					@helper.select(
+		            	form("name"), 
+		            	options = helper.options(rss.FetchCoordinator.getFinishedProcesses()),
+		            	'_label -> "Name",
+		            	'id -> "name"
+		            	)
+	 				<div class="controls">
+		                <button type="submit" class="btn btn-primary">View Similar Links</button>
+		            </div>
+	 			}
+	 		</div>
+		</div>
+    </div>
+}

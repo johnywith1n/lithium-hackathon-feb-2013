@@ -17,6 +17,9 @@ POST	/addRssFeed					controllers.RssFeedController.processRssFeed()
 GET		/createFetch				controllers.FetchRssFeedController.createFetch()
 POST	/createFetch				controllers.FetchRssFeedController.runFetch()
 
+GET		/viewLinks					controllers.ViewSimilarDocumentsController.selectView()
+POST	/viewLinks					controllers.ViewSimilarDocumentsController.showSimilarLinks()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET		/webjars/*file				controllers.WebJarAssets.at(file)

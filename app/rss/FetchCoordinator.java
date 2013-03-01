@@ -77,4 +77,14 @@ public class FetchCoordinator
 	{
 		return Lists.newArrayList(doneProcessToCompanyMap.keySet ());
 	}
+	
+	public static synchronized String getCompanyName (String name)
+	{
+		return doneProcessToCompanyMap.get (name).getName ();
+	}
+	
+	public static synchronized List<SimilarityResult> getResult (String name)
+	{
+		return results.get (name);
+	}
 }

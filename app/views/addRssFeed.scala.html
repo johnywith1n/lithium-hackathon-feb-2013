@@ -1,0 +1,36 @@
+@(form: Form[models.forms.RssFeedForm])
+@implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
+
+@main("Add an RSS Feed") {
+ 	<div class="container-fluid">
+ 		<div class="row-fluid">
+	 		<div class="span12">
+	 			@helper.form(action = routes.RssFeedController.processRssFeed, 'class -> "well form-horizontal") {
+	 				@if(flash.contains("success")) {		
+			            <p class="alert alert-success">
+			                @flash.get("success")
+			            </p>
+        			}
+        			@if(form.hasGlobalErrors) {
+	                	<p class="alert alert-error">
+	                    	@form.globalError.message
+	                	</p>
+		            }
+		            <p class="lead">
+ 						Add a new rss feed
+					</p>
+					@helper.select(
+		            	form("companyName"), 
+		            	options = helper.options(models.Company.getAllCompanyNames()),
+		            	'_label -> "Company",
+		            	'id -> "company"
+		            	)
+	 				@helper.inputText(form("url"), '_label -> "Rss Feed Url", 'id -> "feed_url")
+	 				<div class="controls">
+		                <button type="submit" class="btn btn-primary">Add Rss Feed</button>
+		            </div>
+	 			}
+	 		</div>
+		</div>
+    </div>
+}

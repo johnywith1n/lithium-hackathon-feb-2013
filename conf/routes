@@ -11,6 +11,8 @@ POST	/addCompany					controllers.CompanyController.processCompany()
 GET		/addSampleDoc				controllers.SampleDocumentController.addSampleDoc()
 POST	/addSampleDoc				controllers.SampleDocumentController.processSampleDoc()
 
+GET		/addRssFeed					controllers.RssFeedController.addRssFeed()
+POST	/addRssFeed					controllers.RssFeedController.processRssFeed()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -1,0 +1,41 @@
+@(form: Form[models.forms.FetchRssFeedForm])
+@implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
+
+@main("Fetch Similar Links") {
+ 	<div class="container-fluid">
+ 		<div class="row-fluid">
+	 		<div class="span12">
+	 			@helper.form(action = routes.FetchRssFeedController.runFetch, 'class -> "well form-horizontal") {
+	 				@if(flash.contains("success")) {		
+			            <p class="alert alert-success">
+			                @flash.get("success")
+			            </p>
+        			}
+        			@if(flash.contains("error")) {		
+			            <p class="alert alert-error">
+			                @flash.get("error")
+			            </p>
+        			}
+        			@if(form.hasGlobalErrors) {
+	                	<p class="alert alert-error">
+	                    	@form.globalError.message
+	                	</p>
+		            }
+		            <p class="lead">
+ 						Fetch Similar Links
+					</p>
+					@helper.select(
+		            	form("companyName"), 
+		            	options = helper.options(models.Company.getAllCompanyNames()),
+		            	'_label -> "Company",
+		            	'id -> "company"
+		            	)
+	 				@helper.inputText(form("name"), '_label -> "name", 'id -> "name")
+	 				<div class="controls">
+		                <button type="submit" class="btn btn-primary">Fetch Similar Links</button>
+		            </div>
+	 			}
+	 		</div>
+		</div>
+    </div>
+}

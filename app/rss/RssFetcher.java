@@ -40,7 +40,7 @@ public class RssFetcher
 	private final Company company;
 	private final Set<SampleDocument> samples;
 	private final CosineSimilarityFunction cosineSimilarityFunction;
-	
+
 	public RssFetcher(Company company, HttpClient client)
 	{
 		this.client = client;
@@ -63,7 +63,7 @@ public class RssFetcher
 				SyndFeedInput input = new SyndFeedInput ();
 				SyndFeed feed = input.build (new XmlReader (inputUrl));
 				List<SyndEntry> entries = feed.getEntries ();
-				for(SyndEntry entry: entries)
+				for (SyndEntry entry : entries)
 				{
 					entryUrls.add (entry.getLink ());
 				}
@@ -87,35 +87,38 @@ public class RssFetcher
 
 	private Map<SampleDocument, Double> getSimilarityScores (Vector linkVector)
 	{
-		Map<SampleDocument, Double> similarityScores = new HashMap<SampleDocument, Double>();
-		for(SampleDocument doc: samples)
+		Map<SampleDocument, Double> similarityScores = new HashMap<SampleDocument, Double> ();
+		for (SampleDocument doc : samples)
 		{
-			double val = cosineSimilarityFunction.evaluate (doc.getActualVector (), linkVector);
-			if(val > 0.5)
+			double val = cosineSimilarityFunction.evaluate (
+					doc.getActualVector (), linkVector);
+			if (val > 0.5)
 				similarityScores.put (doc, val);
 		}
 		return similarityScores;
 	}
-	
+
 	/**
-	 * @param urls The rss urls
+	 * @param urls
+	 *            The rss urls
 	 * @return A list of links similar to the sample documents
 	 */
 	public List<SimilarityResult> getSimilarLinks (List<String> rssUrls)
 	{
 		List<String> urls = getRssEntryUrls (rssUrls);
-		List<SimilarityResult> results = new ArrayList<SimilarityResult>();
-		
-		for(String url: urls)
+		List<SimilarityResult> results = new ArrayList<SimilarityResult> ();
+
+		for (String url : urls)
 		{
 			Map<SampleDocument, Double> scores;
 			String body = HttpClientUtils.extractArticle (client, url);
-			BagOfWordsTransform transform = company.getTransform();
-			Vector linkVector = DocumentVectorizer.getTransformTextToVector (body, transform);
-			if(!(scores = getSimilarityScores (linkVector)).isEmpty ())
-				results.add (new SimilarityResult(scores, new Link(url, body)));
+			BagOfWordsTransform transform = company.getTransform ();
+			Vector linkVector = DocumentVectorizer.getTransformTextToVector (
+					body, transform);
+			if (!(scores = getSimilarityScores (linkVector)).isEmpty ())
+				results.add (new SimilarityResult (scores, new Link (url, body)));
 		}
-		
+
 		return results;
 	}
 }

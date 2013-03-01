@@ -20,11 +20,13 @@ public class Application extends Controller
 
 	public static Result index () throws IOException
 	{
-		Company company =Company.getCompany ("sephora");
-		if(company == null)
+		Company company = Company.getCompany ("sephora");
+		if (company == null)
 			company = new Company ("sephora");
-		ProcessSampleDocuments processor = new ProcessSampleDocuments (new DefaultHttpClient(), company);
-		processor.processDocuments (Files.readLines (new File("resources/sample_articles.txt"), Charsets.UTF_8));
+		ProcessSampleDocuments processor = new ProcessSampleDocuments (
+				new DefaultHttpClient (), company);
+		processor.processDocuments (Files.readLines (new File (
+				"resources/sample_articles.txt"), Charsets.UTF_8));
 		return ok ("foo");
 	}
 

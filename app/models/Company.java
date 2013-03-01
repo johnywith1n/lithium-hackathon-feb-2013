@@ -34,6 +34,9 @@ public class Company extends Model
 
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
 	private Set<SampleDocument> sampleDocs;
+	
+	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+	private Set<RssFeed> rssFeed;
 
 	private static Model.Finder<String, Company> find = new Model.Finder<String, Company> (
 			String.class, Company.class);
@@ -72,6 +75,11 @@ public class Company extends Model
 	public Set<SampleDocument> getSampleDocs ()
 	{
 		return sampleDocs;
+	}
+
+	public Set<RssFeed> getRssFeed ()
+	{
+		return rssFeed;
 	}
 
 	public static Company getCompany (String name)

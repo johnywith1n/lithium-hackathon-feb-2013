@@ -38,8 +38,7 @@ public class FetchRssFeedController extends Controller
 			FetchCoordinator.startRssFetchInCallable (feedForm.name,
 					Company.getCompany (feedForm.companyName));
 			flash ("success", "Fetch in progress.");
-			return ok (
-					fetchRssFeed.render (Form.form (FetchRssFeedForm.class),
+			return ok (fetchRssFeed.render (Form.form (FetchRssFeedForm.class),
 					FetchCoordinator.getRunningProcesses ()));
 		}
 	}

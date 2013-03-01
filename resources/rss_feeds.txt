@@ -1,0 +1,14 @@
+http://news.feedzilla.com/en_us/headlines/life-style/fashion.rss
+http://news.feedzilla.com/en_us/headlines/industry/fashion.rss
+http://news.feedzilla.com/en_us/headlines/life-style/beauty.rss
+http://news.feedzilla.com/en_us/headlines/life-style/womens-interests.rss
+http://news.feedzilla.com/en_us/headlines/life-style/shopping.rss
+http://feeds.feedburner.com/nymag/JNGj
+http://feeds.feedburner.com/makeupandbeautyblog
+http://lifestyle.ca.msn.com/rss/makeup.aspx
+http://rss.nytimes.com/services/xml/rss/nyt/FashionandStyle.xml
+http://topics.nytimes.com/top/reference/timestopics/subjects/c/cosmetics_and_toiletries/index.html?rss=1
+http://www.nydailynews.com/cmlink/nydn-all-featured-columnist-feed-1.1178532
+http://feeds.gawker.com/jezebel/full
+http://feeds.feedburner.com/nymag/intelligencer
+http://www.thefashionspot.com/beauty?format=feed&type=rss

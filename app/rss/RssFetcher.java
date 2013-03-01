@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import models.Company;
@@ -83,32 +85,35 @@ public class RssFetcher
 		return entryUrls;
 	}
 
-	private boolean isSimilarToSamples(Vector linkVector)
+	private Map<SampleDocument, Double> getSimilarityScores (Vector linkVector)
 	{
+		Map<SampleDocument, Double> similarityScores = new HashMap<SampleDocument, Double>();
 		for(SampleDocument doc: samples)
 		{
-			if(cosineSimilarityFunction.evaluate (doc.getActualVector (), linkVector) > 0.5)
-				return true;
+			double val = cosineSimilarityFunction.evaluate (doc.getActualVector (), linkVector);
+			if(val > 0.5)
+				similarityScores.put (doc, val);
 		}
-		return false;
+		return similarityScores;
 	}
 	
 	/**
 	 * @param urls The rss urls
 	 * @return A list of links similar to the sample documents
 	 */
-	public List<Link> getSimilarLinks (List<String> rssUrls)
+	public List<SimilarityResult> getSimilarLinks (List<String> rssUrls)
 	{
 		List<String> urls = getRssEntryUrls (rssUrls);
-		List<Link> results = new ArrayList<Link>();
+		List<SimilarityResult> results = new ArrayList<SimilarityResult>();
 		
 		for(String url: urls)
 		{
+			Map<SampleDocument, Double> scores;
 			String body = HttpClientUtils.extractArticle (client, url);
 			BagOfWordsTransform transform = company.getTransform();
 			Vector linkVector = DocumentVectorizer.getTransformTextToVector (body, transform);
-			if(isSimilarToSamples (linkVector))
-				results.add (new Link(url, body));
+			if(!(scores = getSimilarityScores (linkVector)).isEmpty ())
+				results.add (new SimilarityResult(scores, new Link(url, body)));
 		}
 		
 		return results;

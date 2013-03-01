@@ -81,4 +81,9 @@ public class SampleDocument extends Model
 		return (Vector) SerializationUtils.deserialize (getVector ());
 	}
 
+	@Override
+	public String toString()
+	{
+		return getUrl();
+	}
 }
